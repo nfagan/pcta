@@ -5,7 +5,7 @@ ts = nan( numel(entry_ts), 1 );
 
 for i = 1:numel(ts)
   if ( ~isempty(entry_ts{i}) )
-    ts(i) = entry_ts{i};
+    ts(i) = entry_ts{i}(1);
   end
 end
 
