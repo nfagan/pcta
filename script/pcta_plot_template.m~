@@ -27,31 +27,23 @@ mask = fcat.mask( labels, ...
 );
 labels = labels(mask);
 reaction_time = reaction_time(mask);
-reaction_time(reaction_time<0.1) = nan;
-reaction_time(reaction_time>0.6) = nan;
 
-%xcats = {'day'};
-xcats = {'day', 'patch-type'};
+xcats = {'day'};
 gcats = {'patch-type'}; % make a group for each 'patch-type'
 %pcats = {'day'};  % make a panel for each day
 pcats = {'subject'};
 
 [I, C] = findall( labels, 'day' );
 ps = nan( numel(I), 1 );
-n_trials_comp = nan( numel(I), 1 );
-n_trials_coop = nan( numel(I), 1 );
+n_trials_comp = nan()
 for i = 1:numel(I)
   comp = find( labels, 'compete', I{i} );
   coop = find( labels, 'cooperate', I{i} );
   comp_rt = reaction_time(comp);
   coop_rt = reaction_time(coop);
-  n_trials_comp(i) = numel( comp_rt );
-  n_trials_coop(i) = numel( coop_rt );
   ps(i) = ranksum( comp_rt, coop_rt );
 end
 
 pl = plotlabeled.make_common();
-pl.summary_func = @nanmedian;
-% axs = pl.bar( reaction_time, labels, xcats, gcats, pcats );
-% axs = pl.violinplot( reaction_time, labels, gcats, pcats );
-axs = pl.violinplot( reaction_time, labels, xcats, [] );
+axs = pl.bar( reaction_time, labels, xcats, gcats, pcats );
+
