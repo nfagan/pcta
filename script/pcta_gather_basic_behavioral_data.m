@@ -2,7 +2,7 @@ function outs = pcta_gather_basic_behavioral_data(varargin)
 
 defaults = pcta.get_common_make_defaults();
 
-inputs = {'trial_data', 'edf', 'meta'};
+inputs = {'trial_data', 'edf', 'meta', 'monitor_info'};
 
 [params, runner] = ...
   pcta.get_params_and_loop_runner( inputs, '', defaults, varargin );
@@ -26,8 +26,10 @@ function outs = main(files)
 trial_data_file = files('trial_data');
 edf_file = files('edf');
 meta_file = files('meta');
+monitor_file = files('monitor_info');
 
-outs = pcta_basic_behavioral_data( trial_data_file, edf_file, meta_file );
+outs = pcta_basic_behavioral_data( trial_data_file, edf_file ...
+  , meta_file, monitor_file );
 
 end
 

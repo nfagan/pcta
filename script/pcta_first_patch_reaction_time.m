@@ -1,4 +1,4 @@
-function rts = pcta_first_patch_reaction_time(trial_data, edf_file, varargin)
+function rts = pcta_first_patch_reaction_time(start_ts, stop_ts, t, x, y, varargin)
 
 defaults = struct();
 defaults.vel_thresh = 100;
@@ -7,20 +7,18 @@ defaults.sample_rate = 1e3;
 defaults.smooth_func = @(data) smoothdata( data, 'smoothingfactor', 0.05 );
 
 params = shared_utils.general.parsestruct( defaults, varargin );
+assert( numel(start_ts) == numel(stop_ts) ...
+  , 'Expected equal number of start and stop times.' );
 
-mat_time = edf_file.samples.mat_time;
-x = edf_file.samples.posX;
-y = edf_file.samples.posY;
+rts = nan( numel(start_ts), 1 );
 
-rts = nan( numel(trial_data), 1 );
-
-for i = 1:numel(trial_data)
-  start_t = trial_data(i).just_patches.entry_time;
-  entry_ts = pcta_m1_patch_entry_times( trial_data(i).just_patches.patch_entry_times );
+for i = 1:numel(start_ts)
+  start_t = start_ts(i);
+  stop_t = stop_ts(i);
   
-  look_within = mat_time >= start_t & mat_time < min( entry_ts );
+  look_within = t >= start_t & t < min( stop_t );
   
-  sub_t = mat_time(look_within);
+  sub_t = t(look_within);
   sub_x = x(look_within);
   sub_y = y(look_within);
 

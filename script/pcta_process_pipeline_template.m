@@ -19,3 +19,4 @@ end
 
 pcta_make_trial_data();
 pcta_make_meta();
+pcta_make_monitor_info();
