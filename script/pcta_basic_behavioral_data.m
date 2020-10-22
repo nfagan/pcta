@@ -6,10 +6,16 @@ num_trials = numel( trial_data );
 outs = struct();
 outs.patch_types = pcta_patch_types( trial_data );
 outs.string_patch_types = string_patch_types( outs.patch_types );
+
 outs.did_initiate = pcta_did_initiate( trial_data );
-outs.m1_acquired_patches = acquired_patches( trial_data );
+outs.collected_patches = pcta_was_patch_collected( trial_data );
+
+outs.m1_entered_patches = pcta_m1_did_enter_patch( trial_data );
+outs.m1_acquired_patches = m1_acquired_patches( trial_data );
+
 outs.response_time = response_times( trial_data );
 outs.reaction_time = reaction_times( trial_data, edf_file, monitor_file );
+
 outs.labels = meta_file_to_labels( meta_file, outs.string_patch_types, num_trials );
 
 end
@@ -39,7 +45,7 @@ end
 
 end
 
-function did_acquire = acquired_patches(data)
+function did_acquire = m1_acquired_patches(data)
 
 did_acquire = cell( numel(data), 1 );
 
