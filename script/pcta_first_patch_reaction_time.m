@@ -9,9 +9,9 @@ for i = 1:numel(start_ts)
   start_t = start_ts(i);
   start_stops = sacc_info{i};
   
-  if ( ~isempty(start_stops{1}) )
+  if ( ~isempty(start_stops) )
     % Find the start time of the start index of the first saccade.
-    first_sacc = start_stops{1}(1); % index of first saccade.
+    first_sacc = start_stops(1); % index of first saccade.
     first_sacc_t = t(first_sacc); % time of first saccade.
     rts(i) = first_sacc_t - start_t;
   end

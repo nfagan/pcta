@@ -5,6 +5,7 @@ num_trials = numel( trial_data );
 
 [sacc_info, start_ts] = m1_patch_saccade_info( edf_file, trial_data );
 approx_patch_locs = approx_patch_locations( trial_data, edf_file );
+sacc_positions = saccade_positions( sacc_info, edf_file );
 
 outs = struct();
 outs.patch_types = pcta_patch_types( trial_data );
@@ -19,7 +20,35 @@ outs.m1_acquired_patches = m1_acquired_patches( trial_data );
 outs.response_time = response_times( trial_data );
 outs.reaction_time = reaction_times( start_ts, sacc_info, edf_file );
 
+outs.approx_patch_locations = approx_patch_locs;
+outs.saccade_positions = sacc_positions;
+outs.screen_rect = repmat( monitor_file.rect, num_trials, 1 );
+
 outs.labels = meta_file_to_labels( meta_file, outs.string_patch_types, num_trials );
+
+end
+
+function positions = saccade_positions(sacc_info, edf_file)
+
+positions = cell( size(sacc_info) );
+
+if ( ~isempty(edf_file) )
+  x = edf_file.samples.posX;
+  y = edf_file.samples.posY;
+  
+  for i = 1:numel(sacc_info)
+    if ( ~isempty(sacc_info{i}) )
+      first_info = sacc_info{i}(1, :);
+      start_ind = first_info(1);
+      stop_ind = first_info(2);
+      
+      sub_x = x(start_ind:stop_ind);
+      sub_y = y(start_ind:stop_ind);
+      
+      positions{i} = [ sub_x(:)'; sub_y(:)' ];
+    end
+  end
+end
 
 end
 

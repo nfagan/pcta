@@ -37,7 +37,7 @@ for i = 1:numel(start_ts)
     end
   end
   
-  start_stops{i} = start_stop;
+  start_stops(i) = start_stop;
 end
 
 end
