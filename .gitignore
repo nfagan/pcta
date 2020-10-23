@@ -1,2 +1,4 @@
 data/
 +pcta/+config/config.mat
+*.m~
+*.asv
